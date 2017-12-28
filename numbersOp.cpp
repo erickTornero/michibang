@@ -7,15 +7,10 @@ int numbersOp::generateNumbers3(vector<queueValue1> &queue, vector<int> &sorted)
 	int index = 0;
 	int resp = 0;
 	do{
-		if(resp == 0){
-			cout<<"exechere"<<endl;
-		}
 		resp = tryToPutNextNumber(queue,sorted,index);
-	}while(resp != 2);
+	}while(resp !=2 && resp != 3);
 	clearBusy(queue);
-	for(unsigned int dd = 0; dd<sorted.size();dd++){
-		cout<<sorted[dd];
-	}
+	return resp;
 }
 /*
  * Etiqueta como desocupado los N últimos caracteres
@@ -42,8 +37,6 @@ void numbersOp::freeLast(vector<queueValue1> &v,const vector<int> vec){
 			}
 		}
 	}
-	cout<<"queue[7]=";cout<<v[6].isBusy[6]<<endl;
-	cout<<"queue[8]=";cout<<v[7].isBusy[6]<<endl;
 }
 /*
  * Intenta colocar el siguiente número dado un índice, si no lo logra
@@ -52,22 +45,13 @@ void numbersOp::freeLast(vector<queueValue1> &v,const vector<int> vec){
  * No importa si ya se lleno, la funcion intentara colocar el siguiente caracter.
  */
 int numbersOp::tryToPutNextNumber(vector<queueValue1> &v, vector<int> &vSorted, int &ind){
-	/*for(int y=0;y<9;y++){
-		cout<<vSorted[y];
-	}
-	cout<<"--";*/
 	int theLast = 0;
-	cout<<endl;
 	for(unsigned int j=0;j <v.size();j++){
 		if(v[j].usedInCurrent == 0 && v[j].isBusy[ind] == 0){
-			cout<<"Current Index: "<<ind;
 			vSorted[ind] = v[j].value;
 			v[j].usedInCurrent = 1;
-			cout<<"::Value::"<<vSorted[ind]<<endl;
 			//v[j].isBusy[ind] = 1;
-			cout<<"witin ";
 			if(ind == v.size()-1){
-				cout<<"thelast: "<<theLast<<endl;
 				theLast = 2;
 				break;
 			}
@@ -76,16 +60,18 @@ int numbersOp::tryToPutNextNumber(vector<queueValue1> &v, vector<int> &vSorted, 
 		}
 	}
 	--ind;
-	cout<<"*out of*-index=";
-	cout<<ind<<endl;
+	if(ind<0){
+		/*
+		 * When finish all generations
+		 */
+		return 3;
+	}
 	vector<int> toRest;
 	toRest.resize(vSorted.size()-ind);
 	int tmpIdx = ind;
 	for(unsigned i = 0; i< toRest.size(); i++){
 		toRest[i] = vSorted[ind+i];
-		cout<<toRest[i]<<"-";
 	}
-	cout<<endl;
 	freeLast(v,toRest);
 	return theLast;
 }
@@ -94,10 +80,18 @@ int numbersOp::fillQueue(vector<queueValue1> &qu){
 	for(unsigned int i=0; i<qu.size();i++){
 		qu[i].value = i+1;
 	}
-	cout<<"passhere"<<endl;
 }
 int numbersOp::clearBusy(vector<queueValue1> &qu){
 	for(unsigned t = 0; t<qu.size(); t++){
 		qu[t].usedInCurrent = 0;
 	}
+}
+int numbersOp::jumpR(vector<queueValue1>&q,int indx, const vector<int> &sorted){
+	vector<int> toRest;
+	toRest.resize(sorted.size()-indx);
+	for(unsigned i = 0; i< toRest.size(); i++){
+		toRest[i] = sorted[indx+i];
+	}
+	freeLast(q, toRest);
+	return 0;
 }
