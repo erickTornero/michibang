@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <iterator>
+#include <string>
 #include "numbersOp.hpp"
 using namespace std;
 
@@ -12,55 +13,51 @@ int checkIfWin(char car, const vector<char>mich);
 int putChar(char car,int index, vector<char>&mic);
 int searchTriad(int n,const vector<int>vectOf);
 char emulateAGame(const vector<int> &move,vector<int> &respuesta, vector<char> & michi, int &atIndex);
+void listAllTicTacToeGames(string fileName);
 void clearMichi(vector<char> &michx);
 vector<queueValue1> qqq;
 vector<int> sort;
+numbersOp ob(qqq);
 int main(){
-
-	ofstream myfile;
-	//myfile.open ("myFile.txt");
 	mch.resize(9);
 	sort.resize(9);
-	numbersOp ob(qqq);
-	int i=0;
+	listAllTicTacToeGames("myFile.txt");
+}
+void listAllTicTacToeGames(string fileName) {
+	ofstream myfile;
+	myfile.open(fileName);
+	int i = 0;
 	long N = 0;
 	int jumpIndex = 0;
 	vector<int> jugada;
-	cout<<"start";
-	while(i!= 3)
-	{	N++;
-		if(N==255168){
-			int hhhh=0;
-			hhhh=N;
-		}
-		//myfile<<N<<"\t";
-		cout<<N<<"\t";
-		i=ob.generateNumbers3(qqq,sort);
+	cout << "start";
+	while (i != 3)
+	{
+		N++;
+		i = ob.generateNumbers3(qqq, sort);
 		clearMichi(mch);
-		char winer = emulateAGame(sort, jugada, mch,jumpIndex);
-		if(jumpIndex < mch.size() -1){
-			ob.jumpR(qqq,jumpIndex,sort);
+		char winer = emulateAGame(sort, jugada, mch, jumpIndex);
+		if (jumpIndex < mch.size() - 1) {
+			ob.jumpR(qqq, jumpIndex, sort);
 		}
 		unsigned int rr;
-		for(unsigned int dd = 0; dd<mch.size();dd++){
-			//myfile<<jugada[dd];
-			rr=dd;
-			cout<<jugada[dd];
+		if (i != 3) {
+			myfile << N << "\t";
+			for (unsigned int dd = 0; dd<mch.size(); dd++) {
+				myfile << jugada[dd];
+				rr = dd;
+			}
+			myfile << "\t" << winer;
+			myfile << "\n";
 		}
-		//cout<<" "<<rr;
-		//myfile<<"\t"<<winer;
-		cout<<"\t"<<winer;
-		cout<<"\n";
-		//myfile<<"\n";
 
 	}
-	//myfile<<"fin"<<"\n";
-	//myfile.close();
-	cout<<"finish";
+	myfile << "fin" << "\n";
+	myfile.close();
 }
 /*
  * CheckIfWin:
- * brief: Check if the current car wins in the actual michi.
+ * brief: Check if the current char wins in the actual michi.
  * returns 1: if the car wins the michi
  * else returns 0.
  */
@@ -69,7 +66,6 @@ int checkIfWin(char car,const vector<char>mich){
 	for(unsigned int i = 0;i < mich.size(); i++){
 		if(mich[i] == car){
 			vect.push_back(i+1);
-			//cout<<i+1;
 		}
 	}
 	int thereismatch = 0;
@@ -196,7 +192,6 @@ char emulateAGame(const vector<int> &move,vector<int> &respuesta, vector<char> &
 		if(i >= 4){
 			someOneWins = checkIfWin(car,michi);
 			if(someOneWins == 1){
-				//cout<<atIndex;
 				atIndex = i;
 				if(i < respuesta.size() - 1){
 					//Puts 0 the movements that won't be do

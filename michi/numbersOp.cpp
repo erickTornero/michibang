@@ -80,11 +80,13 @@ int numbersOp::fillQueue(vector<queueValue1> &qu){
 	for(unsigned int i=0; i<qu.size();i++){
 		qu[i].value = i+1;
 	}
+	return 0;
 }
 int numbersOp::clearBusy(vector<queueValue1> &qu){
 	for(unsigned t = 0; t<qu.size(); t++){
 		qu[t].usedInCurrent = 0;
 	}
+	return 0;
 }
 int numbersOp::jumpR(vector<queueValue1>&q,int indx, const vector<int> &sorted){
 	vector<int> toRest;

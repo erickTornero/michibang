@@ -22,3 +22,29 @@ carta cardSupport::decodeCard(std::string str){
 	carModel.paloDeCarta = (PALO)str[1];
 	return carModel;
 }
+
+void cardSupport::ordenar(carta *cards, int siz){
+	for(int i = 0; i< siz - 1; i++){
+		int indChng = findTheLessFrom(i,cards,siz);
+		swap(i,indChng,cards);
+	}
+}
+int cardSupport::findTheLessFrom(int indx, carta *cards,int siz){
+	int num = cards[indx].numCarta;
+	int idxLess = indx;
+	for(;indx<siz;++indx){
+		if(cards[indx].numCarta < num){
+			num = cards[indx].numCarta;
+			idxLess = indx;
+		}
+	}
+	return idxLess;
+}
+void cardSupport::swap(int indx1,int indx2, carta *cards){
+	if(indx1!=indx2){
+		carta tmp = cards[indx2];
+		cards[indx2] = cards[indx1];
+		cards[indx1] = tmp;
+	}
+
+}
